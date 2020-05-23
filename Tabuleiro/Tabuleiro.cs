@@ -14,5 +14,10 @@ namespace tabuleiro
             this.Pecas = new Peca[this.Linhas, this.Colunas];
         }
 
+        public Peca peca(int linha, int coluna)
+        {
+            return this.Pecas[linha, coluna];
+        }
+
     }
 }
