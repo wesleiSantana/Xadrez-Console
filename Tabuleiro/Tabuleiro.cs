@@ -19,5 +19,11 @@ namespace tabuleiro
             return this.Pecas[linha, coluna];
         }
 
+        public void ColocarPeca(Peca peca, Posicao posicao)
+        {
+            this.Pecas[posicao.Linha, posicao.Coluna] = peca;
+            peca.Posicao = posicao;
+        }
+
     }
 }
