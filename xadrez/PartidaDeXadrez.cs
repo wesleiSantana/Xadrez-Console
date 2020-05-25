@@ -91,7 +91,7 @@ namespace xadrez
 
             if (JogadorAtual != this.Tabuleiro.peca(posicao).Cor)
             {
-                throw new TabuleiroException("A peça de oriem escolhida não e sua!");
+                throw new TabuleiroException("A peça de origem escolhida não e sua!");
             }
 
             if (!this.Tabuleiro.peca(posicao).existeMovimentosPossiveis())
@@ -102,7 +102,7 @@ namespace xadrez
 
         public void validarPosicaoDeDestino(Posicao origem, Posicao destino)
         {
-            if (!this.Tabuleiro.peca(origem).podeMoverPara(destino))
+            if (!this.Tabuleiro.peca(origem).movimentoPossivel(destino))
             {
                 throw new TabuleiroException("Posição de destino inválida! ");
             }
@@ -209,7 +209,7 @@ namespace xadrez
                         {
                             Posicao origem = pecaCor.Posicao;
                             Posicao destino = new Posicao(linha, coluna);
-                            
+
                             Peca pecaCapturada = executaMovimento(origem, destino);
                             bool testeXeque = estaEmXeque(cor);
                             desfazMovimento(origem, destino, pecaCapturada);
@@ -232,19 +232,42 @@ namespace xadrez
 
         private void colocarPecas()
         {
-            colocarNovaPeca('c', 1, new Torre(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('c', 2, new Torre(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('d', 2, new Torre(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('e', 2, new Torre(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('e', 1, new Torre(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('d', 1, new Rei(this.Tabuleiro, Cor.Branca));
+            // Pecas Brancas
+            colocarNovaPeca('a', 1, new Torre(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('b', 1, new Cavalo(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('c', 1, new Bispo(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('d', 1, new Dama(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('e', 1, new Rei(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('f', 1, new Bispo(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('g', 1, new Cavalo(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('h', 1, new Torre(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('a', 2, new Peao(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('b', 2, new Peao(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('c', 2, new Peao(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('d', 2, new Peao(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('e', 2, new Peao(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('f', 2, new Peao(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('g', 2, new Peao(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('h', 2, new Peao(this.Tabuleiro, Cor.Branca));
 
-            colocarNovaPeca('c', 7, new Torre(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('c', 8, new Torre(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('d', 7, new Torre(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('e', 7, new Torre(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('e', 8, new Torre(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('d', 8, new Rei(this.Tabuleiro, Cor.Preta));
+
+            // Pecas Pretas
+             colocarNovaPeca('a', 8, new Torre(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('b', 8, new Cavalo(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('c', 8, new Bispo(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('d', 8, new Dama(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('e', 8, new Rei(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('f', 8, new Bispo(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('g', 8, new Cavalo(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('h', 8, new Torre(this.Tabuleiro, Cor.Preta));           
+            colocarNovaPeca('a', 7, new Peao(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('b', 7, new Peao(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('c', 7, new Peao(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('d', 7, new Peao(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('e', 7, new Peao(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('f', 7, new Peao(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('g', 7, new Peao(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('h', 7, new Peao(this.Tabuleiro, Cor.Preta));
         }
     }
 }
