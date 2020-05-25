@@ -37,6 +37,29 @@ namespace xadrez
             {
                 this.Capturadas.Add(pecaCapturada);
             }
+
+            // roque-pequeno
+            if (peca is Rei && posicaoDestino.Coluna == posicaoOrigem.Coluna + 2)
+            {
+                Posicao jodagaDoTorreOrigem = new Posicao(posicaoOrigem.Linha, posicaoOrigem.Coluna + 3);
+                Posicao jodagaDoTorreDestino = new Posicao(posicaoOrigem.Linha, posicaoOrigem.Coluna + 1);
+
+                Peca PecaTorre = this.Tabuleiro.retirarPeca(jodagaDoTorreOrigem);
+                PecaTorre.incrementarQtdeMovimentos();
+                this.Tabuleiro.ColocarPeca(PecaTorre, jodagaDoTorreDestino);
+            }
+
+            // roque-grande
+            if (peca is Rei && posicaoDestino.Coluna == posicaoOrigem.Coluna - 2)
+            {
+                Posicao jodagaDoTorreOrigem = new Posicao(posicaoOrigem.Linha, posicaoOrigem.Coluna - 4);
+                Posicao jodagaDoTorreDestino = new Posicao(posicaoOrigem.Linha, posicaoOrigem.Coluna - 1);
+
+                Peca PecaTorre = this.Tabuleiro.retirarPeca(jodagaDoTorreOrigem);
+                PecaTorre.incrementarQtdeMovimentos();
+                this.Tabuleiro.ColocarPeca(PecaTorre, jodagaDoTorreDestino);
+            }
+
             return pecaCapturada;
         }
 
@@ -50,6 +73,28 @@ namespace xadrez
                 Capturadas.Remove(pecaCapturada);
             }
             this.Tabuleiro.ColocarPeca(peca, origem);
+
+            // desfaz o roque-pequeno
+            if (peca is Rei && destino.Coluna == origem.Coluna + 2)
+            {
+                Posicao jodagaDoTorreOrigem = new Posicao(origem.Linha, origem.Coluna + 3);
+                Posicao jodagaDoTorreDestino = new Posicao(origem.Linha, origem.Coluna + 1);
+
+                Peca PecaTorre = this.Tabuleiro.retirarPeca(jodagaDoTorreDestino);
+                PecaTorre.decrementarQtdeMovimentos();
+                this.Tabuleiro.ColocarPeca(PecaTorre, jodagaDoTorreOrigem);
+            }
+
+            // desfaz o roque-grande
+            if (peca is Rei && destino.Coluna == origem.Coluna - 2)
+            {
+                Posicao jodagaDoTorreOrigem = new Posicao(origem.Linha, origem.Coluna - 4);
+                Posicao jodagaDoTorreDestino = new Posicao(origem.Linha, origem.Coluna - 1);
+
+                Peca PecaTorre = this.Tabuleiro.retirarPeca(jodagaDoTorreDestino);
+                PecaTorre.decrementarQtdeMovimentos();
+                this.Tabuleiro.ColocarPeca(PecaTorre, jodagaDoTorreOrigem);
+            }
         }
 
         public void realizaJogada(Posicao origem, Posicao destino)
@@ -237,7 +282,7 @@ namespace xadrez
             colocarNovaPeca('b', 1, new Cavalo(this.Tabuleiro, Cor.Branca));
             colocarNovaPeca('c', 1, new Bispo(this.Tabuleiro, Cor.Branca));
             colocarNovaPeca('d', 1, new Dama(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('e', 1, new Rei(this.Tabuleiro, Cor.Branca));
+            colocarNovaPeca('e', 1, new Rei(this.Tabuleiro, Cor.Branca, this));
             colocarNovaPeca('f', 1, new Bispo(this.Tabuleiro, Cor.Branca));
             colocarNovaPeca('g', 1, new Cavalo(this.Tabuleiro, Cor.Branca));
             colocarNovaPeca('h', 1, new Torre(this.Tabuleiro, Cor.Branca));
@@ -252,14 +297,14 @@ namespace xadrez
 
 
             // Pecas Pretas
-             colocarNovaPeca('a', 8, new Torre(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('a', 8, new Torre(this.Tabuleiro, Cor.Preta));
             colocarNovaPeca('b', 8, new Cavalo(this.Tabuleiro, Cor.Preta));
             colocarNovaPeca('c', 8, new Bispo(this.Tabuleiro, Cor.Preta));
             colocarNovaPeca('d', 8, new Dama(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('e', 8, new Rei(this.Tabuleiro, Cor.Preta));
+            colocarNovaPeca('e', 8, new Rei(this.Tabuleiro, Cor.Preta, this));
             colocarNovaPeca('f', 8, new Bispo(this.Tabuleiro, Cor.Preta));
             colocarNovaPeca('g', 8, new Cavalo(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('h', 8, new Torre(this.Tabuleiro, Cor.Preta));           
+            colocarNovaPeca('h', 8, new Torre(this.Tabuleiro, Cor.Preta));
             colocarNovaPeca('a', 7, new Peao(this.Tabuleiro, Cor.Preta));
             colocarNovaPeca('b', 7, new Peao(this.Tabuleiro, Cor.Preta));
             colocarNovaPeca('c', 7, new Peao(this.Tabuleiro, Cor.Preta));

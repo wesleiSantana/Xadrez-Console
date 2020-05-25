@@ -7,120 +7,121 @@ namespace xadrez
     {
         public Dama(Tabuleiro tabuleiro, Cor cor) : base(tabuleiro, cor) { }
 
-
-        public override string ToString()
-        {
-            return "D";
-        }
-
         private bool podeMover(Posicao posicao)
         {
             Peca peca = this.Tabuleiro.peca(posicao);
-            return peca == null || peca.Cor != this.Cor;
+            return peca == null || peca.Cor != Cor;  
         }
 
         public override bool[,] movimentosPossiveis()
         {
-            bool[,] matriz = new bool[this.Tabuleiro.Linhas, this.Tabuleiro.Colunas];
-            Posicao posicao = new Posicao(0, 0);
+            bool[,] matrizMovimentosPossiveis = new bool[this.Tabuleiro.Linhas, this.Tabuleiro.Colunas];
+            Posicao newposicao = new Posicao(0, 0);
 
-            //Esquerda
-            posicao.definirValores(this.Posicao.Linha, this.Posicao.Coluna - 1);
-            while (this.Tabuleiro.posicaoValida(posicao) && podeMover(posicao))
+            // acima
+            newposicao.definirValores(this.Posicao.Linha - 1, this.Posicao.Coluna); 
+            while (this.Tabuleiro.posicaoValida(newposicao) && podeMover(newposicao))
             {
-                matriz[posicao.Linha, posicao.Coluna] = true;
-                if (this.Tabuleiro.peca(posicao) != null && this.Tabuleiro.peca(posicao).Cor != this.Cor)
+                matrizMovimentosPossiveis[newposicao.Linha, newposicao.Coluna] = true;
+                if (this.Tabuleiro.peca(newposicao) != null && this.Tabuleiro.peca(newposicao).Cor != this.Cor)
                 {
                     break;
                 }
-                posicao.definirValores(posicao.Linha, posicao.Coluna - 1);
+                newposicao.Linha = newposicao.Linha - 1;
             }
 
-            //Direita
-            posicao.definirValores(this.Posicao.Linha, this.Posicao.Coluna + 1);
-            while (this.Tabuleiro.posicaoValida(posicao) && podeMover(posicao))
+            // Baixo
+            newposicao.definirValores(this.Posicao.Linha + 1, this.Posicao.Coluna);
+            while (this.Tabuleiro.posicaoValida(newposicao) && podeMover(newposicao))
             {
-                matriz[posicao.Linha, posicao.Coluna] = true;
-                if (this.Tabuleiro.peca(posicao) != null && this.Tabuleiro.peca(posicao).Cor != this.Cor)
+                matrizMovimentosPossiveis[newposicao.Linha, newposicao.Coluna] = true;
+                if (this.Tabuleiro.peca(newposicao) != null && this.Tabuleiro.peca(newposicao).Cor != this.Cor)
                 {
                     break;
                 }
-                posicao.definirValores(posicao.Linha, posicao.Coluna + 1);
+                newposicao.Linha = newposicao.Linha + 1;
             }
 
-            //Acima
-            posicao.definirValores(this.Posicao.Linha - 1, this.Posicao.Coluna);
-            while (this.Tabuleiro.posicaoValida(posicao) && podeMover(posicao))
+            // Direita
+            newposicao.definirValores(this.Posicao.Linha, this.Posicao.Coluna + 1);
+            while (this.Tabuleiro.posicaoValida(newposicao) && podeMover(newposicao))
             {
-                matriz[posicao.Linha, posicao.Coluna] = true;
-                if (this.Tabuleiro.peca(posicao) != null && this.Tabuleiro.peca(posicao).Cor != this.Cor)
+                matrizMovimentosPossiveis[newposicao.Linha, newposicao.Coluna] = true;
+                if (this.Tabuleiro.peca(newposicao) != null && this.Tabuleiro.peca(newposicao).Cor != this.Cor)
                 {
                     break;
                 }
-                posicao.definirValores(posicao.Linha + 1, posicao.Coluna);
+                newposicao.Coluna = newposicao.Coluna + 1;
             }
 
-            //Abaixo
-            posicao.definirValores(this.Posicao.Linha + 1, this.Posicao.Coluna);
-            while (this.Tabuleiro.posicaoValida(posicao) && podeMover(posicao))
+            // Esquerda
+            newposicao.definirValores(this.Posicao.Linha, this.Posicao.Coluna - 1);
+            while (this.Tabuleiro.posicaoValida(newposicao) && podeMover(newposicao))
             {
-                matriz[posicao.Linha, posicao.Coluna] = true;
-                if (this.Tabuleiro.peca(posicao) != null && this.Tabuleiro.peca(posicao).Cor != this.Cor)
+                matrizMovimentosPossiveis[newposicao.Linha, newposicao.Coluna] = true;
+                if (this.Tabuleiro.peca(newposicao) != null && this.Tabuleiro.peca(newposicao).Cor != this.Cor)
                 {
                     break;
                 }
-                posicao.definirValores(posicao.Linha + 1, posicao.Coluna);
+                newposicao.Coluna = newposicao.Coluna - 1;
             }
 
-            //Noroeste
-            posicao.definirValores(this.Posicao.Linha - 1, this.Posicao.Coluna - 1);
-            while (this.Tabuleiro.posicaoValida(posicao) && podeMover(posicao))
+
+
+             //Noroeste
+            newposicao.definirValores(this.Posicao.Linha - 1, this.Posicao.Coluna - 1);
+            while (this.Tabuleiro.posicaoValida(newposicao) && podeMover(newposicao))
             {
-                matriz[posicao.Linha, posicao.Coluna] = true;
-                if (this.Tabuleiro.peca(posicao) != null && this.Tabuleiro.peca(posicao).Cor != this.Cor)
+                matrizMovimentosPossiveis[newposicao.Linha, newposicao.Coluna] = true;
+                if (this.Tabuleiro.peca(newposicao) != null && this.Tabuleiro.peca(newposicao).Cor != this.Cor)
                 {
                     break;
                 }
-                posicao.definirValores(posicao.Linha - 1, posicao.Coluna - 1);
+                newposicao.definirValores(newposicao.Linha - 1, newposicao.Coluna - 1);
             }
 
             //Nordeste
-            posicao.definirValores(this.Posicao.Linha - 1, this.Posicao.Coluna + 1);
-            while (this.Tabuleiro.posicaoValida(posicao) && podeMover(posicao))
+            newposicao.definirValores(this.Posicao.Linha - 1, this.Posicao.Coluna + 1);
+            while (this.Tabuleiro.posicaoValida(newposicao) && podeMover(newposicao))
             {
-                matriz[posicao.Linha, posicao.Coluna] = true;
-                if (this.Tabuleiro.peca(posicao) != null && this.Tabuleiro.peca(posicao).Cor != this.Cor)
+                matrizMovimentosPossiveis[newposicao.Linha, newposicao.Coluna] = true;
+                if (this.Tabuleiro.peca(newposicao) != null && this.Tabuleiro.peca(newposicao).Cor != this.Cor)
                 {
                     break;
                 }
-                posicao.definirValores(posicao.Linha - 1, posicao.Coluna + 1);
+                newposicao.definirValores(newposicao.Linha - 1, newposicao.Coluna + 1);
             }
 
-            //Suldeste
-            posicao.definirValores(this.Posicao.Linha + 1, this.Posicao.Coluna + 1);
-            while (this.Tabuleiro.posicaoValida(posicao) && podeMover(posicao))
+            //Sudeste
+            newposicao.definirValores(this.Posicao.Linha + 1, this.Posicao.Coluna + 1);
+            while (this.Tabuleiro.posicaoValida(newposicao) && podeMover(newposicao))
             {
-                matriz[posicao.Linha, posicao.Coluna] = true;
-                if (this.Tabuleiro.peca(posicao) != null && this.Tabuleiro.peca(posicao).Cor != this.Cor)
+                matrizMovimentosPossiveis[newposicao.Linha, newposicao.Coluna] = true;
+                if (this.Tabuleiro.peca(newposicao) != null && this.Tabuleiro.peca(newposicao).Cor != this.Cor)
                 {
                     break;
                 }
-                posicao.definirValores(posicao.Linha + 1, posicao.Coluna + 1);
+                newposicao.definirValores(newposicao.Linha + 1, newposicao.Coluna + 1);
             }
 
             //Suldoeste
-            posicao.definirValores(this.Posicao.Linha + 1, this.Posicao.Coluna - 1);
-            while (this.Tabuleiro.posicaoValida(posicao) && podeMover(posicao))
+            newposicao.definirValores(this.Posicao.Linha + 1, this.Posicao.Coluna - 1);
+            while (this.Tabuleiro.posicaoValida(newposicao) && podeMover(newposicao))
             {
-                matriz[posicao.Linha, posicao.Coluna] = true;
-                if (this.Tabuleiro.peca(posicao) != null && this.Tabuleiro.peca(posicao).Cor != this.Cor)
+                matrizMovimentosPossiveis[newposicao.Linha, newposicao.Coluna] = true;
+                if (this.Tabuleiro.peca(newposicao) != null && this.Tabuleiro.peca(newposicao).Cor != this.Cor)
                 {
                     break;
                 }
-                posicao.definirValores(posicao.Linha + 1, posicao.Coluna - 1);
+                newposicao.definirValores(newposicao.Linha + 1, newposicao.Coluna - 1);
             }
 
-            return matriz;
+            return matrizMovimentosPossiveis;
+        }
+
+        public override string ToString()
+        {
+            return "D";
         }
     }
 }

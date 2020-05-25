@@ -7,15 +7,10 @@ namespace xadrez
     {
         public Peao(Tabuleiro tabuleiro, Cor cor) : base(tabuleiro, cor) { }
 
-        public override string ToString()
-        {
-            return "P";
-        }
-
         private bool existeInimigo(Posicao posicao)
         {
             Peca peca = this.Tabuleiro.peca(posicao);
-            return peca != null || peca.Cor != this.Cor;
+            return peca != null && peca.Cor != Cor;
         }
 
         private bool livre(Posicao posicao)
@@ -28,7 +23,7 @@ namespace xadrez
             bool[,] matriz = new bool[this.Tabuleiro.Linhas, this.Tabuleiro.Colunas];
             Posicao posicao = new Posicao(0, 0);
 
-            if (this.Cor == Cor.Branca)
+            if (Cor == Cor.Branca)
             {
                 posicao.definirValores(this.Posicao.Linha - 1, this.Posicao.Coluna);
                 if (this.Tabuleiro.posicaoValida(posicao) && livre(posicao))
@@ -68,7 +63,7 @@ namespace xadrez
                     matriz[posicao.Linha, posicao.Coluna] = true;
                 }
 
-                posicao.definirValores(this.Posicao.Linha +1, this.Posicao.Coluna + 1);
+                posicao.definirValores(this.Posicao.Linha + 1, this.Posicao.Coluna + 1);
                 if (this.Tabuleiro.posicaoValida(posicao) && existeInimigo(posicao))
                 {
                     matriz[posicao.Linha, posicao.Coluna] = true;
@@ -81,6 +76,11 @@ namespace xadrez
                 }
             }
             return matriz;
+        }
+
+        public override string ToString() 
+        {
+            return "P";
         }
     }
 }
