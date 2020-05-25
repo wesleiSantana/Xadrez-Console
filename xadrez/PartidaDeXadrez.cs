@@ -13,6 +13,7 @@ namespace xadrez
         private HashSet<Peca> Capturadas;
         public bool xeque { get; private set; }
 
+        public Peca vulneravelEnPassant { get; private set; }
 
 
         public PartidaDeXadrez()
@@ -22,6 +23,7 @@ namespace xadrez
             this.JogadorAtual = Cor.Branca;
             this.Terminada = false;
             this.xeque = false;
+            this.vulneravelEnPassant = null;
             this.Pecas = new HashSet<Peca>();
             this.Capturadas = new HashSet<Peca>();
             colocarPecas();
@@ -60,6 +62,25 @@ namespace xadrez
                 this.Tabuleiro.ColocarPeca(PecaTorre, jodagaDoTorreDestino);
             }
 
+            // en passant
+            if (peca is Peao)
+            {
+                if (posicaoOrigem.Coluna != posicaoDestino.Coluna && pecaCapturada == null)
+                {
+                    Posicao posicaoPeao;
+                    if (peca.Cor == Cor.Branca)
+                    {
+                        posicaoPeao = new Posicao(posicaoDestino.Linha + 1, posicaoDestino.Coluna);
+                    }
+                    else
+                    {
+                        posicaoPeao = new Posicao(posicaoDestino.Linha - 1, posicaoDestino.Coluna);
+                    }
+                    pecaCapturada = this.Tabuleiro.retirarPeca(posicaoPeao);
+                    Capturadas.Add(pecaCapturada);
+                }
+            }
+
             return pecaCapturada;
         }
 
@@ -95,6 +116,25 @@ namespace xadrez
                 PecaTorre.decrementarQtdeMovimentos();
                 this.Tabuleiro.ColocarPeca(PecaTorre, jodagaDoTorreOrigem);
             }
+
+            /// desfaz en passant
+            if (peca is Peao)
+            {
+                if (origem.Coluna != destino.Coluna && pecaCapturada == this.vulneravelEnPassant)
+                {
+                    Peca Peao = this.Tabuleiro.retirarPeca(destino);
+                    Posicao posicaoPeao;
+                    if (peca.Cor == Cor.Branca)
+                    {
+                        posicaoPeao = new Posicao(3, destino.Coluna);
+                    }
+                    else
+                    {
+                        posicaoPeao = new Posicao(4, destino.Coluna);
+                    }
+                    this.Tabuleiro.ColocarPeca(Peao, posicaoPeao);
+                }
+            }
         }
 
         public void realizaJogada(Posicao origem, Posicao destino)
@@ -125,6 +165,19 @@ namespace xadrez
                 this.Turno++;
                 mudaJogador();
             }
+
+            Peca pecaDestino = this.Tabuleiro.peca(destino);
+
+            // en passant
+            if (pecaDestino is Peao && (destino.Linha == origem.Linha - 2 || destino.Linha == origem.Linha + 2))
+            {
+                this.vulneravelEnPassant = pecaDestino;
+            }
+            else
+            {
+                this.vulneravelEnPassant = null;
+            }
+
         }
 
         public void validarPosicaoDeOrigem(Posicao posicao)
@@ -286,14 +339,15 @@ namespace xadrez
             colocarNovaPeca('f', 1, new Bispo(this.Tabuleiro, Cor.Branca));
             colocarNovaPeca('g', 1, new Cavalo(this.Tabuleiro, Cor.Branca));
             colocarNovaPeca('h', 1, new Torre(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('a', 2, new Peao(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('b', 2, new Peao(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('c', 2, new Peao(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('d', 2, new Peao(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('e', 2, new Peao(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('f', 2, new Peao(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('g', 2, new Peao(this.Tabuleiro, Cor.Branca));
-            colocarNovaPeca('h', 2, new Peao(this.Tabuleiro, Cor.Branca));
+
+            colocarNovaPeca('a', 2, new Peao(this.Tabuleiro, Cor.Branca, this));
+            colocarNovaPeca('b', 2, new Peao(this.Tabuleiro, Cor.Branca, this));
+            colocarNovaPeca('c', 2, new Peao(this.Tabuleiro, Cor.Branca, this));
+            colocarNovaPeca('d', 2, new Peao(this.Tabuleiro, Cor.Branca, this));
+            colocarNovaPeca('e', 2, new Peao(this.Tabuleiro, Cor.Branca, this));
+            colocarNovaPeca('f', 2, new Peao(this.Tabuleiro, Cor.Branca, this));
+            colocarNovaPeca('g', 2, new Peao(this.Tabuleiro, Cor.Branca, this));
+            colocarNovaPeca('h', 2, new Peao(this.Tabuleiro, Cor.Branca, this));
 
 
             // Pecas Pretas
@@ -305,14 +359,15 @@ namespace xadrez
             colocarNovaPeca('f', 8, new Bispo(this.Tabuleiro, Cor.Preta));
             colocarNovaPeca('g', 8, new Cavalo(this.Tabuleiro, Cor.Preta));
             colocarNovaPeca('h', 8, new Torre(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('a', 7, new Peao(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('b', 7, new Peao(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('c', 7, new Peao(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('d', 7, new Peao(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('e', 7, new Peao(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('f', 7, new Peao(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('g', 7, new Peao(this.Tabuleiro, Cor.Preta));
-            colocarNovaPeca('h', 7, new Peao(this.Tabuleiro, Cor.Preta));
+
+            colocarNovaPeca('a', 7, new Peao(this.Tabuleiro, Cor.Preta, this));
+            colocarNovaPeca('b', 7, new Peao(this.Tabuleiro, Cor.Preta, this));
+            colocarNovaPeca('c', 7, new Peao(this.Tabuleiro, Cor.Preta, this));
+            colocarNovaPeca('d', 7, new Peao(this.Tabuleiro, Cor.Preta, this));
+            colocarNovaPeca('e', 7, new Peao(this.Tabuleiro, Cor.Preta, this));
+            colocarNovaPeca('f', 7, new Peao(this.Tabuleiro, Cor.Preta, this));
+            colocarNovaPeca('g', 7, new Peao(this.Tabuleiro, Cor.Preta, this));
+            colocarNovaPeca('h', 7, new Peao(this.Tabuleiro, Cor.Preta, this));
         }
     }
 }

@@ -5,7 +5,12 @@ namespace xadrez
 {
     class Peao : Peca
     {
-        public Peao(Tabuleiro tabuleiro, Cor cor) : base(tabuleiro, cor) { }
+        private PartidaDeXadrez partidaDeXadrez;
+
+        public Peao(Tabuleiro tabuleiro, Cor cor, PartidaDeXadrez partidaDeXadrez) : base(tabuleiro, cor)
+        {
+            this.partidaDeXadrez = partidaDeXadrez;
+        }
 
         private bool existeInimigo(Posicao posicao)
         {
@@ -48,6 +53,22 @@ namespace xadrez
                 {
                     matriz[posicao.Linha, posicao.Coluna] = true;
                 }
+
+                // en passanr
+                if (this.Posicao.Linha == 3)
+                {
+                    Posicao posicaoEsquerda = new Posicao(this.Posicao.Linha, this.Posicao.Coluna - 1);
+                    if (this.Tabuleiro.posicaoValida(posicaoEsquerda) && existeInimigo(posicaoEsquerda) && this.Tabuleiro.peca(posicaoEsquerda) == this.partidaDeXadrez.vulneravelEnPassant)
+                    {
+                        matriz[posicaoEsquerda.Linha - 1, posicaoEsquerda.Coluna] = true;
+                    }
+
+                    Posicao posicaoDireita = new Posicao(this.Posicao.Linha, this.Posicao.Coluna + 1);
+                    if (this.Tabuleiro.posicaoValida(posicaoDireita) && existeInimigo(posicaoDireita) && this.Tabuleiro.peca(posicaoDireita) == this.partidaDeXadrez.vulneravelEnPassant)
+                    {
+                        matriz[posicaoDireita.Linha - 1, posicaoDireita.Coluna] = true;
+                    }
+                }
             }
             else
             {
@@ -74,11 +95,27 @@ namespace xadrez
                 {
                     matriz[posicao.Linha, posicao.Coluna] = true;
                 }
+
+                // en passanr
+                if (this.Posicao.Linha == 4)
+                {
+                    Posicao posicaoEsquerda = new Posicao(this.Posicao.Linha, this.Posicao.Coluna - 1);
+                    if (this.Tabuleiro.posicaoValida(posicaoEsquerda) && existeInimigo(posicaoEsquerda) && this.Tabuleiro.peca(posicaoEsquerda) == this.partidaDeXadrez.vulneravelEnPassant)
+                    {
+                        matriz[posicaoEsquerda.Linha + 1, posicaoEsquerda.Coluna] = true;
+                    }
+
+                    Posicao posicaoDireita = new Posicao(this.Posicao.Linha, this.Posicao.Coluna + 1);
+                    if (this.Tabuleiro.posicaoValida(posicaoDireita) && existeInimigo(posicaoDireita) && this.Tabuleiro.peca(posicaoDireita) == this.partidaDeXadrez.vulneravelEnPassant)
+                    {
+                        matriz[posicaoDireita.Linha + 1, posicaoDireita.Coluna] = true;
+                    }
+                }
             }
             return matriz;
         }
 
-        public override string ToString() 
+        public override string ToString()
         {
             return "P";
         }
